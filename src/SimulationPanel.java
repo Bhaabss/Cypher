@@ -118,12 +118,10 @@ public class SimulationPanel extends JPanel implements ActionListener {
             if (ant instanceof ForagerAnt forager) {
 
                 // Pick up food if close to a source
-                for (FoodSource food : foods) {
-                    if (Math.abs(forager.getX() - food.getX()) < 15 && Math.abs(forager.getY() - food.getY()) < 15) {
-                        forager.pickUpFood(food);
-                    }
-
-                }
+                foods.stream()
+                        .filter(food -> Math.abs(forager.getX() - food.getX()) < 15
+                                     && Math.abs(forager.getY() - food.getY()) < 15)
+                        .forEach(forager::pickUpFood);
 
                 // Deposit food if close to home colony
                 if (Math.abs(forager.getX() - colony.getX()) < 15 && Math.abs(forager.getY() - colony.getY()) < 15) {
@@ -240,11 +238,10 @@ public class SimulationPanel extends JPanel implements ActionListener {
         }
         // Label showing how much food is left at each source.
         g.setColor(Color.BLACK);
-        for (FoodSource f : foods) {
-            if (!f.isDepleted()) {
-                g.drawString(String.valueOf(f.getAmountRemaining()), f.getX(), f.getY() - 3);
-            }
-        }
+        foods.stream()
+        .filter(f -> !f.isDepleted())
+        .forEach(f -> g.drawString(String.valueOf(f.getAmountRemaining()), f.getX(), f.getY() - 3));
+
         // Draw pheromones (very see-through purple)
         g.setColor(new Color(90, 20, 120, 50));
         for (Pheromone p : pheromones) {
