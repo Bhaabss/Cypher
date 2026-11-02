@@ -158,10 +158,13 @@ public class SimulationPanel extends JPanel implements ActionListener {
         ants.addAll(toAdd);
 
         // Replace any depleted food sources with a new food source else where
-        int removedCount = foods.size();
+        long depletedCount = foods.stream()
+            .filter(FoodSource::isDepleted)
+            .count();
+
         foods.removeIf(FoodSource::isDepleted);
-        removedCount -= foods.size();
-        for (int i = 0; i < removedCount; i++) {
+
+        for (int i = 0; i < depletedCount; i++) {
             int newX = 50 + (int) (Math.random() * 300);
             int newY = 50 + (int) (Math.random() * 300);
             foods.add(new FoodSource(newX, newY, 10));
