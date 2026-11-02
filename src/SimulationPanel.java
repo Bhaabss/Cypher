@@ -50,10 +50,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
         foods.add(new FoodSource(300, 100, 15));
 
         for (int i = 0; i < antCount; i++) {
-            ants.add(new ScoutAnt(200, 200, 4, colony));
+            ants.add(AntFactory.createScout(200, 200, 4, colony));
         }
-
-        ants.add(new QueenAnt(colony.getX(), colony.getY(), 1, colony));
+        ants.add(AntFactory.createQueen(colony.getX(), colony.getY(), 1, colony));
     }
 
     // Sets up the colony, food, ants, and starts the timer
@@ -128,7 +127,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
                     forager.returnToColony();
                     if (!forager.isCarryingFood()) {
                         // Convert forager back into scout
-                        Ant newScout = new ScoutAnt(forager.getX(), forager.getY(), forager.speed, colony);
+                        Ant newScout = AntFactory.createScout(forager.getX(), forager.getY(), forager.speed, colony);
                         toRemove.add(forager);
                         toAdd.add(newScout);
                     }
