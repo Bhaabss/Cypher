@@ -101,9 +101,12 @@ public class SimulationPanel extends JPanel implements ActionListener {
         areaWidth = getWidth();
         areaHeight = getHeight();
 
-        pheromones.forEach(Pheromone::decay);
-
-        pheromones.removeIf(Pheromone::isWeak);
+        // Decay and filter weak pheromones using a stream pipeline.
+        // Must use a mutable collector so ants can still add pheromones.
+        pheromones = pheromones.stream()
+            .peek(Pheromone::decay)
+            .filter(p -> !p.isWeak())
+            .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
 
         List<Ant> toAdd = new ArrayList<>();
         List<Ant> toRemove = new ArrayList<>();
