@@ -204,6 +204,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
         g.setColor(Color.BLACK);
         g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 20);
 
+        g.setColor(Color.BLACK);
+        g.drawString(statsSummary, 10, 35);
+
         // Draw active food sources as layered triangles
         for (FoodSource f : foods) {
             if (!f.isDepleted()) {
