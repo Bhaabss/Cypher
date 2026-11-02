@@ -171,6 +171,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
         }
 
         // Redraw screen after updates
+        updateStats();
         repaint();
     }
 
