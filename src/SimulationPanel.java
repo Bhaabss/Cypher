@@ -207,6 +207,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
         g.setColor(Color.BLACK);
         g.drawString(statsSummary, 10, 35);
 
+        int foodLeft = foods.stream().mapToInt(FoodSource::getAmountRemaining).sum();
+        g.drawString("Food left: " + foodLeft, 10, 50);
+
         // Draw active food sources as layered triangles
         for (FoodSource f : foods) {
             if (!f.isDepleted()) {
