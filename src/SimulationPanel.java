@@ -100,9 +100,12 @@ public class SimulationPanel extends JPanel implements ActionListener {
         areaWidth = getWidth();
         areaHeight = getHeight();
 
-        pheromones.forEach(Pheromone::decay);
-
-        pheromones.removeIf(Pheromone::isWeak);
+        // Decay and filter weak pheromones using a stream pipeline.
+        // Must use a mutable collector so ants can still add pheromones.
+        pheromones = pheromones.stream()
+            .peek(Pheromone::decay)
+            .filter(p -> !p.isWeak())
+            .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
 
         List<Ant> toAdd = new ArrayList<>();
         List<Ant> toRemove = new ArrayList<>();
@@ -154,16 +157,20 @@ public class SimulationPanel extends JPanel implements ActionListener {
         ants.addAll(toAdd);
 
         // Replace any depleted food sources with a new food source else where
-        int removedCount = foods.size();
+        long depletedCount = foods.stream()
+            .filter(FoodSource::isDepleted)
+            .count();
+
         foods.removeIf(FoodSource::isDepleted);
-        removedCount -= foods.size();
-        for (int i = 0; i < removedCount; i++) {
+
+        for (int i = 0; i < depletedCount; i++) {
             int newX = 50 + (int) (Math.random() * 300);
             int newY = 50 + (int) (Math.random() * 300);
             foods.add(new FoodSource(newX, newY, 10));
         }
 
         // Redraw screen after updates
+        updateStats();
         repaint();
     }
 
@@ -196,6 +203,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
         // Display current food count text
         g.setColor(Color.BLACK);
         g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 20);
+
+        g.setColor(Color.BLACK);
+        g.drawString(statsSummary, 10, 35);
 
         // Draw active food sources as layered triangles
         for (FoodSource f : foods) {
@@ -292,6 +302,27 @@ public class SimulationPanel extends JPanel implements ActionListener {
             g2.dispose();
         }
 
+    }
+
+    private String statsSummary = "";
+
+    private void updateStats() {
+        var countsByType = ants.parallelStream()
+            .collect(java.util.stream.Collectors.groupingBy(
+                ant -> ant.getClass().getSimpleName(),
+                java.util.stream.Collectors.counting()
+            ));
+
+        long totalAnts = ants.size();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total ants: ").append(totalAnts).append("  ");
+
+        countsByType.forEach((type, count) -> {
+            sb.append(type).append("=").append(count).append("  ");
+        });
+
+        statsSummary = sb.toString();
     }
 
     // Program entry point: Creates window and adds panel
