@@ -301,6 +301,27 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
     }
 
+    private String statsSummary = "";
+
+    private void updateStats() {
+        var countsByType = ants.parallelStream()
+            .collect(java.util.stream.Collectors.groupingBy(
+                ant -> ant.getClass().getSimpleName(),
+                java.util.stream.Collectors.counting()
+            ));
+
+        long totalAnts = ants.size();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total ants: ").append(totalAnts).append("  ");
+
+        countsByType.forEach((type, count) -> {
+            sb.append(type).append("=").append(count).append("  ");
+        });
+
+        statsSummary = sb.toString();
+    }
+
     // Program entry point: Creates window and adds panel
     public static void main(String[] args) {
         JFrame frame = new JFrame("Ant Colony Simulation");
