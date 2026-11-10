@@ -66,25 +66,21 @@ public class SimulationPanel extends JPanel implements ActionListener {
     }
 
     // returns default none if no strongest pheromone found
-    public static Pheromone getStrongestNearby(int x, int y) {
-        Pheromone strongest = null;
-        double bestStrength = 0;
+    public static Pheromone getStrongestNearby(int x, int y, PheromoneType type) {
 
-        // tracker variable to track highest pheromone intensity
-        for (Pheromone p : pheromones) {
-            int dx = Math.abs(p.getX() - x);
-            int dy = Math.abs(p.getY() - y);
+        return pheromones.stream()
 
-            // Only consider pheromones within a 30px radius
-            if (dx < 30 && dy < 30) {
-                if (p.getStrength() > bestStrength) {
-                    bestStrength = p.getStrength();
-                    strongest = p;
-                }
-            }
-        }
+            .filter(p -> p.getType() == type)
 
-        return strongest;
+            .filter(p ->
+                Math.abs(p.getX() - x) < 30 &&
+                Math.abs(p.getY() - y) < 30)
+
+            .max(
+                java.util.Comparator.comparingDouble(
+                    Pheromone::getStrength))
+
+            .orElse(null);
     }
 
     // Runs every timer tick to update position and interaction logic
