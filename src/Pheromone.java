@@ -3,11 +3,17 @@ public class Pheromone {
     private int x;
     private int y;
     private double strength;
+    private PheromoneType type;
 
-    public Pheromone(int x, int y, double strength) {
+    public Pheromone(int x, int y, double strength, PheromoneType type) {
         this.x = x;
         this.y = y;
         this.strength = strength;
+        this.type = type;
+    }
+
+    public PheromoneType getType() {
+        return type;
     }
 
     public void decay() {
