@@ -10,6 +10,8 @@ public class ScoutAnt extends Ant {
     public ScoutAnt(int x, int y, int speed, Colony homeColony) {
         super(x, y, speed, homeColony);
         this.tilesExplored = 0;
+
+        setStrategy(new PheromoneFollowing());
     }
 
     //Moves the scout and increases the explored tile count. 
