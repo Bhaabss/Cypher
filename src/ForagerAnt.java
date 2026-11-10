@@ -51,8 +51,13 @@ public class ForagerAnt extends Ant {
     public void update() {
 
         if (carryingFood) {
+            double trailStrength =
+                Math.hypot(
+                    x - homeColony.getX(),
+                    y - homeColony.getY()) / 50;
+
             // Strong pheromone trail
-            SimulationPanel.addPheromone(new Pheromone(x, y, 2.0));
+            SimulationPanel.addPheromone(new Pheromone(x, y, trailStrength, PheromoneType.FOOD));
 
             // Head directly to colony
             int dx = Integer.compare(homeColony.getX(), x);

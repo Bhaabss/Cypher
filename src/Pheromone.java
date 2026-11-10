@@ -17,7 +17,13 @@ public class Pheromone {
     }
 
     public void decay() {
-        strength *= 0.995;
+
+        if (type == PheromoneType.FOOD) {
+            strength *= 0.998;
+        }
+        else {
+            strength *= 0.990;
+        }
     }
 
     public boolean isWeak() {
