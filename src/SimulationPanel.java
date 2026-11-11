@@ -275,35 +275,36 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
             // Draw Queen twice as big as other ants.
             if (ant instanceof QueenAnt) {
-                g2.scale(2, 2);
+                g2.scale(1.2, 1.2);
             }
 
             // ANTS DESIGN
-            // 1. Head
-            g2.fillRect(2, 0, 4, 3);
+
+            // 1. Head (larger)
+            g2.fillRect(6, 1, 13, 13);
 
             // 2. Middle Body
-            g2.fillRect(1, 4, 6, 5);
+            g2.fillRect(3, 9, 18, 21);
 
             // 3. End Body
-            g2.fillRect(0, 10, 8, 7);
+            g2.fillRect(1, 27, 22, 16);
 
-            // Middle body top legs
-            g2.fillRect(-3, 4, 4, 1); // Left upper
-            g2.fillRect(7, 4, 4, 1); // Right upper
+            // Top pair
+            g2.fillRect(-7, 12, 10, 3);
+            g2.fillRect(21, 12, 10, 3);
 
-            // Middle body bottom legs
-            g2.fillRect(-4, 9, 5, 1); // Left lower
-            g2.fillRect(7, 9, 5, 1); // Right lower
+            // Middle pair
+            g2.fillRect(-9, 24, 12, 3);
+            g2.fillRect(21, 24, 12, 3);
 
-            // End body legs
-            g2.fillRect(-4, 14, 6, 1); // Left abdomen leg
-            g2.fillRect(7, 14, 6, 1); // Right abdomen leg
+            // Bottom pair
+            g2.fillRect(-9, 38, 12, 3);
+            g2.fillRect(21, 38, 12, 3);
 
             // Eyes
             g2.setColor(Color.BLACK);
-            g2.fillRect(2, 1, 2, 2); // Left eye
-            g2.fillRect(5, 1, 2, 2); // Right eye
+            g2.fillRect(7, 1, 4, 4);
+            g2.fillRect(14, 1, 4, 4);
 
             g2.dispose();
         }
