@@ -182,6 +182,8 @@ public class SimulationPanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        g.setFont(new Font("Arial", Font.BOLD, 15));
 
         // Draw colony
         int cx = colony.getX();
@@ -208,13 +210,13 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
         // Display current food count text
         g.setColor(Color.BLACK);
-        g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 20);
+        g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 25);
 
         g.setColor(Color.BLACK);
-        g.drawString(statsSummary, 10, 35);
+        g.drawString(statsSummary, 10, 45);
 
         int foodLeft = foods.stream().mapToInt(FoodSource::getAmountRemaining).sum();
-        g.drawString("Food left: " + foodLeft, 10, 50);
+        g.drawString("Food left: " + foodLeft, 10, 65);
 
         // Draw active food sources as layered triangles
         for (FoodSource f : foods) {
@@ -374,12 +376,19 @@ public class SimulationPanel extends JPanel implements ActionListener {
         resetButton.addActionListener(e -> panel.resetSimulation(antCountSlider.getValue()));
 
         // Add controls into frame
+        controlPanel.add(Box.createVerticalStrut(15));
         controlPanel.add(speedLabel);
+        controlPanel.add(Box.createVerticalStrut(5));
         controlPanel.add(speedSlider);
+
+        controlPanel.add(Box.createVerticalStrut(20));
         controlPanel.add(antCountLabel);
+        controlPanel.add(Box.createVerticalStrut(5));
         controlPanel.add(antCountSlider);
+
+        controlPanel.add(Box.createVerticalStrut(20));
         controlPanel.add(resetButton);
-        frame.add(controlPanel, BorderLayout.EAST);
+                frame.add(controlPanel, BorderLayout.EAST);
 
         // Set window size, exit program button and make it visible
         frame.setSize(550, 400);
