@@ -188,21 +188,23 @@ public class SimulationPanel extends JPanel implements ActionListener {
         int cy = colony.getY();
 
         // COLONY DESIGN
+
         // Layer 1: Largest Outer Boundary
         g.setColor(new Color(50, 30, 10));
-        g.fillRect(cx - 10, cy - 10, 40, 40);
+        g.fillRect(cx - 24, cy - 24, 96, 96);
 
         // Layer 2: Outer Base
         g.setColor(new Color(80, 50, 20));
-        g.fillRect(cx - 5, cy - 5, 30, 30);
+        g.fillRect(cx - 12, cy - 12, 72, 72);
 
         // Layer 3: Middle Ring
         g.setColor(new Color(130, 85, 40));
-        g.fillRect(cx, cy, 20, 20);
+        g.fillRect(cx, cy, 48, 48);
 
         // Layer 4: Inner Core
         g.setColor(new Color(190, 140, 80));
-        g.fillRect(cx + 5, cy + 5, 10, 10);
+        g.fillRect(cx + 12, cy + 12, 24, 24);
+
 
         // Display current food count text
         g.setColor(Color.BLACK);
@@ -251,7 +253,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
         // Draw pheromones (very see-through purple)
         g.setColor(new Color(90, 20, 120, 50));
         for (Pheromone p : pheromones) {
-            int size = (int) (10 * p.getStrength());
+            int size = (int) (20 * p.getStrength());
             g.fillOval(p.getX(), p.getY(), size, size);
         }
 
