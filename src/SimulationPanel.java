@@ -182,37 +182,41 @@ public class SimulationPanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        g.setFont(new Font("Arial", Font.BOLD, 15));
 
         // Draw colony
         int cx = colony.getX();
         int cy = colony.getY();
 
         // COLONY DESIGN
+
         // Layer 1: Largest Outer Boundary
         g.setColor(new Color(50, 30, 10));
-        g.fillRect(cx - 10, cy - 10, 40, 40);
+        g.fillRect(cx - 24, cy - 24, 96, 96);
 
         // Layer 2: Outer Base
         g.setColor(new Color(80, 50, 20));
-        g.fillRect(cx - 5, cy - 5, 30, 30);
+        g.fillRect(cx - 12, cy - 12, 72, 72);
 
         // Layer 3: Middle Ring
         g.setColor(new Color(130, 85, 40));
-        g.fillRect(cx, cy, 20, 20);
+        g.fillRect(cx, cy, 48, 48);
 
         // Layer 4: Inner Core
         g.setColor(new Color(190, 140, 80));
-        g.fillRect(cx + 5, cy + 5, 10, 10);
+        g.fillRect(cx + 12, cy + 12, 24, 24);
+
 
         // Display current food count text
         g.setColor(Color.BLACK);
-        g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 20);
+        g.drawString("Colony Food Stored: " + colony.getFoodStored(), 10, 25);
 
         g.setColor(Color.BLACK);
-        g.drawString(statsSummary, 10, 35);
+        g.drawString(statsSummary, 10, 45);
 
         int foodLeft = foods.stream().mapToInt(FoodSource::getAmountRemaining).sum();
-        g.drawString("Food left: " + foodLeft, 10, 50);
+        g.drawString("Food left: " + foodLeft, 10, 65);
 
         // Draw active food sources as layered triangles
         for (FoodSource f : foods) {
@@ -222,24 +226,23 @@ public class SimulationPanel extends JPanel implements ActionListener {
                 int size = 30; // Increased overall size
 
                 // FOOD DESIGN
-                // Back triangle
+
                 g.setColor(new Color(230, 175, 115));
-                int[] backX = { x - 4, x + size + 4, x + (size / 2) };
-                int[] backY = { y + size + 4, y + size + 4, y - 2 };
+                int[] backX = {x - 10, x + 70, x + 30};
+                int[] backY = {y + 70, y + 70, y - 6};
                 g.fillPolygon(backX, backY, 3);
 
-                // Front triangle
                 g.setColor(new Color(195, 60, 50));
-                int[] topX = { x, x + size, x + (size / 2) };
-                int[] topY = { y + size, y + size, y };
+                int[] topX = {x - 2, x + 62, x + 30};
+                int[] topY = {y + 64, y + 64, y - 2};
                 g.fillPolygon(topX, topY, 3);
 
-                // Pepperoni
                 g.setColor(new Color(130, 25, 20));
-                int spotSize = 8;
-                g.fillOval(x + (size / 2) - 4, y + 7, spotSize, spotSize); // Top spot near upper tip
-                g.fillOval(x + 3, y + size - 14, spotSize, spotSize); // Bottom-left spot near base
-                g.fillOval(x + size - 11, y + size - 14, spotSize, spotSize); // Bottom-right spot near base
+                int spotSize = 16;
+                g.fillOval(x + 22, y + 12, spotSize, spotSize);
+                g.fillOval(x + 10, y + 38, spotSize, spotSize);
+                g.fillOval(x + 34, y + 38, spotSize, spotSize);
+
             }
         }
         // Label showing how much food is left at each source.
@@ -251,7 +254,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
         // Draw pheromones (very see-through purple)
         g.setColor(new Color(90, 20, 120, 50));
         for (Pheromone p : pheromones) {
-            int size = (int) (10 * p.getStrength());
+            int size = (int) (20 * p.getStrength());
             g.fillOval(p.getX(), p.getY(), size, size);
         }
 
@@ -275,35 +278,36 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
             // Draw Queen twice as big as other ants.
             if (ant instanceof QueenAnt) {
-                g2.scale(2, 2);
+                g2.scale(1.2, 1.2);
             }
 
             // ANTS DESIGN
-            // 1. Head
-            g2.fillRect(2, 0, 4, 3);
+
+            // 1. Head (larger)
+            g2.fillRect(6, 1, 13, 13);
 
             // 2. Middle Body
-            g2.fillRect(1, 4, 6, 5);
+            g2.fillRect(3, 9, 18, 21);
 
             // 3. End Body
-            g2.fillRect(0, 10, 8, 7);
+            g2.fillRect(1, 27, 22, 16);
 
-            // Middle body top legs
-            g2.fillRect(-3, 4, 4, 1); // Left upper
-            g2.fillRect(7, 4, 4, 1); // Right upper
+            // Top pair
+            g2.fillRect(-7, 12, 10, 3);
+            g2.fillRect(21, 12, 10, 3);
 
-            // Middle body bottom legs
-            g2.fillRect(-4, 9, 5, 1); // Left lower
-            g2.fillRect(7, 9, 5, 1); // Right lower
+            // Middle pair
+            g2.fillRect(-9, 24, 12, 3);
+            g2.fillRect(21, 24, 12, 3);
 
-            // End body legs
-            g2.fillRect(-4, 14, 6, 1); // Left abdomen leg
-            g2.fillRect(7, 14, 6, 1); // Right abdomen leg
+            // Bottom pair
+            g2.fillRect(-9, 38, 12, 3);
+            g2.fillRect(21, 38, 12, 3);
 
             // Eyes
             g2.setColor(Color.BLACK);
-            g2.fillRect(2, 1, 2, 2); // Left eye
-            g2.fillRect(5, 1, 2, 2); // Right eye
+            g2.fillRect(7, 1, 4, 4);
+            g2.fillRect(14, 1, 4, 4);
 
             g2.dispose();
         }
@@ -349,6 +353,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
         JSlider speedSlider = new JSlider(1, 5, 2);
         JLabel speedLabel = new JLabel("Ant Speed: " + speedSlider.getValue());
+        speedLabel.setFont(new Font("Arial", Font.BOLD, 15));
         speedSlider.setMajorTickSpacing(1);
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
@@ -359,6 +364,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
         JSlider antCountSlider = new JSlider(0, 40, 20);
         JLabel antCountLabel = new JLabel("Number of Ants: " + antCountSlider.getValue());
+        antCountLabel.setFont(new Font("Arial", Font.BOLD, 15));
         antCountSlider.setMajorTickSpacing(10);
         antCountSlider.setMinorTickSpacing(5);
         antCountSlider.setPaintTicks(true);
@@ -372,12 +378,19 @@ public class SimulationPanel extends JPanel implements ActionListener {
         resetButton.addActionListener(e -> panel.resetSimulation(antCountSlider.getValue()));
 
         // Add controls into frame
+        controlPanel.add(Box.createVerticalStrut(15));
         controlPanel.add(speedLabel);
+        controlPanel.add(Box.createVerticalStrut(5));
         controlPanel.add(speedSlider);
+
+        controlPanel.add(Box.createVerticalStrut(20));
         controlPanel.add(antCountLabel);
+        controlPanel.add(Box.createVerticalStrut(5));
         controlPanel.add(antCountSlider);
+
+        controlPanel.add(Box.createVerticalStrut(20));
         controlPanel.add(resetButton);
-        frame.add(controlPanel, BorderLayout.EAST);
+                frame.add(controlPanel, BorderLayout.EAST);
 
         // Set window size, exit program button and make it visible
         frame.setSize(550, 400);
