@@ -353,6 +353,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
         JSlider speedSlider = new JSlider(1, 5, 2);
         JLabel speedLabel = new JLabel("Ant Speed: " + speedSlider.getValue());
+        speedLabel.setFont(new Font("Arial", Font.BOLD, 15));
         speedSlider.setMajorTickSpacing(1);
         speedSlider.setPaintTicks(true);
         speedSlider.setPaintLabels(true);
@@ -363,6 +364,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
         JSlider antCountSlider = new JSlider(0, 40, 20);
         JLabel antCountLabel = new JLabel("Number of Ants: " + antCountSlider.getValue());
+        antCountLabel.setFont(new Font("Arial", Font.BOLD, 15));
         antCountSlider.setMajorTickSpacing(10);
         antCountSlider.setMinorTickSpacing(5);
         antCountSlider.setPaintTicks(true);
