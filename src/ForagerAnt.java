@@ -1,8 +1,8 @@
 //A Forager Ant collects food and brings it back to the colony.
 public class ForagerAnt extends Ant {
 
-    // Checks whether the ant is currently carrying food.
-    private boolean carryingFood;
+    private boolean carryingFood;    // Checks whether the ant is currently carrying food.
+    private FoodSource foodSource;   // where this ant got its food from
 
     /*
      * Creates a forager ant starting at a position,
@@ -27,6 +27,7 @@ public class ForagerAnt extends Ant {
             int taken = food.take(1);
             if (taken > 0) {
                 carryingFood = true;
+                foodSource = food;
             }
         } catch (DepletedFoodException e) {
             System.out.println(this + " found nothing: " + e.getMessage());
@@ -57,7 +58,7 @@ public class ForagerAnt extends Ant {
                     y - homeColony.getY()) / 50;
 
             // Strong pheromone trail
-            SimulationPanel.addPheromone(new Pheromone(x, y, trailStrength, PheromoneType.FOOD));
+            SimulationPanel.addPheromone(new Pheromone(x, y, trailStrength, PheromoneType.FOOD, foodSource));
 
             // Head directly to colony
             int dx = Integer.compare(homeColony.getX(), x);

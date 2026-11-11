@@ -162,11 +162,14 @@ public class SimulationPanel extends JPanel implements ActionListener {
             .filter(FoodSource::isDepleted)
             .count();
 
+        // Remove trails that lead to food that has run out
+        pheromones.removeIf(p -> p.getSource() != null && p.getSource().isDepleted());
+        
         foods.removeIf(FoodSource::isDepleted);
 
         for (int i = 0; i < depletedCount; i++) {
-            int newX = 50 + (int) (Math.random() * 300);
-            int newY = 50 + (int) (Math.random() * 300);
+            int newX = 20 + (int) (Math.random() * Math.max(1, areaWidth - 70));
+            int newY = 20 + (int) (Math.random() * Math.max(1, areaHeight - 70));
             foods.add(new FoodSource(newX, newY, 10));
         }
 
