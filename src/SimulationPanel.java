@@ -29,6 +29,9 @@ public class SimulationPanel extends JPanel implements ActionListener {
     // Timer for simulation
     private Timer timer;
 
+    // Current ant speed, matches the speed slider's default
+    private int antSpeed = 2;
+
     // Allow ants to drop pheromones
     public static void addPheromone(Pheromone p) {
         pheromones.add(p);
@@ -36,7 +39,10 @@ public class SimulationPanel extends JPanel implements ActionListener {
 
     // updates the speed of all ants in the simulation
     public void setAllAntSpeed(int speed) {
-        ants.forEach(ant -> ant.setSpeed(speed));
+        antSpeed = speed;
+        ants.stream()
+            .filter(ant -> !(ant instanceof QueenAnt))
+            .forEach(ant -> ant.setSpeed(speed));
     }
 
     // resets the simulation to its initial state
@@ -50,7 +56,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
         foods.add(new FoodSource(300, 100, 15));
 
         for (int i = 0; i < antCount; i++) {
-            ants.add(AntFactory.createScout(200, 200, 4, colony));
+            ants.add(AntFactory.createScout(200, 200, antSpeed, colony));
         }
         ants.add(AntFactory.createQueen(colony.getX(), colony.getY(), 1, colony));
     }
@@ -142,6 +148,7 @@ public class SimulationPanel extends JPanel implements ActionListener {
                             toRemove.add(scout);
                             toAdd.add(newForager);
                             System.out.println("Scout found food and became a forager");
+                            break;
                         }
                     }
                 }
@@ -155,11 +162,14 @@ public class SimulationPanel extends JPanel implements ActionListener {
             .filter(FoodSource::isDepleted)
             .count();
 
+        // Remove trails that lead to food that has run out
+        pheromones.removeIf(p -> p.getSource() != null && p.getSource().isDepleted());
+        
         foods.removeIf(FoodSource::isDepleted);
 
         for (int i = 0; i < depletedCount; i++) {
-            int newX = 50 + (int) (Math.random() * 300);
-            int newY = 50 + (int) (Math.random() * 300);
+            int newX = 20 + (int) (Math.random() * Math.max(1, areaWidth - 70));
+            int newY = 20 + (int) (Math.random() * Math.max(1, areaHeight - 70));
             foods.add(new FoodSource(newX, newY, 10));
         }
 
